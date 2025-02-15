@@ -48,7 +48,6 @@ namespace Weather
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //Загрузити останнє місто
             string lastCity = Weather.Properties.Settings.Default.LastCity; 
             if (!string.IsNullOrEmpty(lastCity))
             {
@@ -67,7 +66,7 @@ namespace Weather
 
                     if (!response.IsSuccessStatusCode)
                     {
-                        MessageBox.Show($"Помилка отримання даних: {response.ReasonPhrase}");
+                        MessageBox.Show($"Error retrieving data: {response.ReasonPhrase}");
                         return null;
                     }
 
@@ -76,7 +75,7 @@ namespace Weather
 
                     if (data?.Main == null || data.Weather == null || data.Weather.Count == 0)
                     {
-                        MessageBox.Show("Не вдалося отримати дані про погоду.");
+                        MessageBox.Show("Failed to retrieve weather data.");
                         return null;
                     }
 
@@ -89,7 +88,7 @@ namespace Weather
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Помилка: {ex.Message}");
+                    MessageBox.Show($"Error: {ex.Message}");
                     return null;
                 }
             }
@@ -131,16 +130,16 @@ namespace Weather
             string cityName = city.Text;
             if (string.IsNullOrWhiteSpace(cityName))
             {
-                MessageBox.Show("Введіть назву міста");
+                MessageBox.Show("Enter the name of the city");
                 return;
             }
 
             WeatherInfo weather = await GetWeatherAsync(cityName);
             if (weather != null)
             {
-                min.Text = $"Мін. темп.: {weather.TempMin}°C";
-                max.Text = $"Макс. темп.: {weather.TempMax}°C";
-                осади.Text = $"Осади: {(weather.IsRaining ? "Так" : "Ні")}";
+                min.Text = $"Min. temp.: {weather.TempMin}°C";
+                max.Text = $"Max. temp.: {weather.TempMax}°C";
+                осади.Text = $"Precipitation: {(weather.IsRaining ? "Yes" : "No")}";
 
                 // Сохранение последнего города
                 Weather.Properties.Settings.Default.LastCity = cityName;

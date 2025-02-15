@@ -8,7 +8,7 @@
   </configSections>
 
   <appSettings>
-    <add key="ApiKey" value="8c2c60f96e13ec78fed673d62d77eb02"/>
+    <add key="ApiKey" value="enter your key here"/>
   </appSettings>
 
   <startup>

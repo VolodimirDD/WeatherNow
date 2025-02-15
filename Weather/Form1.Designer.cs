@@ -37,11 +37,11 @@
             // 
             // prognoz
             // 
-            this.prognoz.Location = new System.Drawing.Point(245, 262);
+            this.prognoz.Location = new System.Drawing.Point(141, 253);
             this.prognoz.Name = "prognoz";
             this.prognoz.Size = new System.Drawing.Size(125, 61);
             this.prognoz.TabIndex = 0;
-            this.prognoz.Text = "Прогноз";
+            this.prognoz.Text = "Forecast";
             this.prognoz.UseVisualStyleBackColor = true;
             this.prognoz.Click += new System.EventHandler(this.prognoz_Click_1);
             // 
@@ -57,27 +57,27 @@
             this.min.AutoSize = true;
             this.min.Location = new System.Drawing.Point(189, 121);
             this.min.Name = "min";
-            this.min.Size = new System.Drawing.Size(67, 13);
+            this.min.Size = new System.Drawing.Size(65, 13);
             this.min.TabIndex = 2;
-            this.min.Text = "Мін. темп.: -";
+            this.min.Text = "Min. temp.: -";
             // 
             // max
             // 
             this.max.AutoSize = true;
             this.max.Location = new System.Drawing.Point(189, 145);
             this.max.Name = "max";
-            this.max.Size = new System.Drawing.Size(77, 13);
+            this.max.Size = new System.Drawing.Size(68, 13);
             this.max.TabIndex = 3;
-            this.max.Text = "Макс. темп.: -";
+            this.max.Text = "Max. temp.: -";
             // 
             // осади
             // 
             this.осади.AutoSize = true;
             this.осади.Location = new System.Drawing.Point(187, 170);
             this.осади.Name = "осади";
-            this.осади.Size = new System.Drawing.Size(42, 13);
+            this.осади.Size = new System.Drawing.Size(68, 13);
             this.осади.TabIndex = 5;
-            this.осади.Text = "Осади:";
+            this.осади.Text = "Precipitation:";
             // 
             // Form1
             // 
