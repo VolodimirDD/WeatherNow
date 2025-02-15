@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using System.Configuration;
 
 namespace Weather
 {
     public partial class Form1 : Form
     {
-        private const string ApiKey = "8c2c60f96e13ec78fed673d62d77eb02"; 
+        private static readonly string ApiKey = ConfigurationManager.AppSettings["ApiKey"];
         private const string ApiUrl = "http://api.openweathermap.org/data/2.5/weather?q={0}&appid={1}&units=metric";
 
         public Form1()
@@ -63,31 +65,26 @@ namespace Weather
                     string url = string.Format(ApiUrl, city, ApiKey);
                     HttpResponseMessage response = await client.GetAsync(url);
 
-                    // Проверяем статус ответа
                     if (!response.IsSuccessStatusCode)
                     {
-                        MessageBox.Show($"Помилка при отриманні даних: {response.StatusCode.ToString()}");
+                        MessageBox.Show($"Помилка отримання даних: {response.ReasonPhrase}");
                         return null;
                     }
 
-                    var responseString = await response.Content.ReadAsStringAsync();
-                    dynamic data = JsonConvert.DeserializeObject(responseString);
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject<WeatherApiResponse>(responseString);
 
-                    if (data?.main == null)
+                    if (data?.Main == null || data.Weather == null || data.Weather.Count == 0)
                     {
-                        MessageBox.Show("Не вдалося отримати дані.");
+                        MessageBox.Show("Не вдалося отримати дані про погоду.");
                         return null;
                     }
-
-                    double tempMin = data.main.temp_min;
-                    double tempMax = data.main.temp_max;
-                    bool isRaining = data.weather[0].main.ToString().Contains("Rain");
 
                     return new WeatherInfo
                     {
-                        TempMin = tempMin,
-                        TempMax = tempMax,
-                        IsRaining = isRaining
+                        TempMin = data.Main.TempMin,
+                        TempMax = data.Main.TempMax,
+                        IsRaining = data.Weather[0].Main.Contains("Rain")
                     };
                 }
                 catch (Exception ex)
@@ -98,11 +95,35 @@ namespace Weather
             }
         }
 
-        private class WeatherInfo
+        public class WeatherInfo
         {
             public double TempMin { get; set; }
             public double TempMax { get; set; }
             public bool IsRaining { get; set; }
+        }
+
+        public class WeatherApiResponse
+        {
+            [JsonProperty("main")]
+            public MainInfo Main { get; set; }
+
+            [JsonProperty("weather")]
+            public List<WeatherDescription> Weather { get; set; }
+        }
+
+        public class MainInfo
+        {
+            [JsonProperty("temp_min")]
+            public double TempMin { get; set; }
+
+            [JsonProperty("temp_max")]
+            public double TempMax { get; set; }
+        }
+
+        public class WeatherDescription
+        {
+            [JsonProperty("main")]
+            public string Main { get; set; }
         }
 
         private async void prognoz_Click_1(object sender, EventArgs e)
